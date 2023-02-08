@@ -4,7 +4,9 @@
       <section>
         <div class="flex">
           <div class="max-w-xs">
-            <label for="wallet" class="block text-sm font-medium text-gray-700"
+            <label
+              for="wallet"
+              class="block text-sm font-medium text-gray-700"
               >Тикер</label
             >
             <div class="mt-1 relative rounded-md shadow-md">
@@ -70,10 +72,12 @@
 
       <template v-if="tickers.length">
         <hr class="w-full border-t border-gray-600 my-4" />
+
         <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
           <div
             v-for="t in tickers"
             :key="t.name"
+            @click="sel = t"
             class="bg-white overflow-hidden shadow rounded-lg border-purple-800 border-solid cursor-pointer"
           >
             <div class="px-4 py-5 sm:p-6 text-center">
@@ -108,7 +112,10 @@
 
         <hr class="w-full border-t border-gray-600 my-4" />
 
-        <section class="relative">
+        <section
+          v-if="sel"
+          class="relative"
+        >
           <h3 class="text-lg leading-6 font-medium text-gray-900 my-8">
             VUE - USD
           </h3>
@@ -118,7 +125,11 @@
             <div class="bg-purple-800 border w-10 h-48"></div>
             <div class="bg-purple-800 border w-10 h-16"></div>
           </div>
-          <button type="button" class="absolute top-0 right-0">
+          <button
+            @click="sel = null"
+            type="button"
+            class="absolute top-0 right-0"
+          >
             <svg
               xmlns="http://www.w3.org/2000/svg"
               xmlns:xlink="http://www.w3.org/1999/xlink"
@@ -149,16 +160,17 @@
 
 <script>
 export default {
-  name: "App",
+  name: 'App',
 
   data() {
     return {
-      ticker: "",
+      ticker: '',
       tickers: [
-        { name: "Demo", price: "-" },
-        { name: "Demo", price: "6" },
-        { name: "Demo", price: "-" },
+        { name: 'Demo', price: '-' },
+        { name: 'Demo', price: '6' },
+        { name: 'Demo', price: '-' },
       ],
+      sel: null,
     };
   },
 
@@ -166,11 +178,11 @@ export default {
     add() {
       const newTicker = {
         name: this.ticker,
-        price: "",
+        price: '',
       };
 
       this.tickers.push(newTicker);
-      this.ticker = "";
+      this.ticker = '';
     },
     handleDelete(tickersToRemove) {
       //console.log(tickersToRemove);
