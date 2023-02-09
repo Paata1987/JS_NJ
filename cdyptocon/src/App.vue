@@ -47,8 +47,8 @@
 
         <dl class="mt-5 grid grid-cols-1 gap-5 sm:grid-cols-3">
           <div
-            v-for="t in tickers"
-            :key="t.name"
+            v-for="(t, idx) in tickers"
+            :key="idx"
             @click="select(t)"
             :class="{
               'border-4': sel === t,
@@ -155,14 +155,15 @@ export default {
       this.tickers.push(currentTicker);
       setInterval(async () => {
         const f = await fetch(
-          `https://min-api.cryptocompare.com/data/price?fsym=${currentTicker.name}&tsyms=USD&api_key=${changeThiSwithApiKey}`
+          //del key: ddbaa78c63ae32dc3a83d263ced521477ac846a4dbcc0526f00b82fb620fab6b
+          `https://min-api.cryptocompare.com/data/price?fsym=${currentTicker.name}&tsyms=USD&api_key=ddbaa78c63ae32dc3a83d263ced521477ac846a4dbcc0526f00b82fb620fab6b`
         );
         const data = await f.json();
 
-        this.tickers.find((t) => t.name == currentTicker.name).price =
+        this.tickers.find((t) => t.name === currentTicker.name).price =
           data.USD > 1 ? data.USD.toFixed(2) : data.USD.toPrecision(2);
 
-        if (this.sel.name === currentTicker.name) {
+        if (this.sel?.name === currentTicker.name) {
           this.graph.push(data.USD);
         }
 
