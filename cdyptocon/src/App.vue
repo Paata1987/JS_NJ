@@ -145,7 +145,35 @@ export default {
     };
   },
 
+  created() {
+    const tickerData = localStorage.getItem("cryptonom-list");
+    if (tickerData) {
+      this.tickers = JSON.parse(tickerData);
+      this.tickers.forEach((ticker) => {
+        this.subcribeToUpdates(ticker.name);
+      });
+    }
+  },
+
   methods: {
+    subcribeToUpdates(tickerName) {
+      setInterval(async () => {
+        const f = await fetch(
+          //del key: ddbaa78c63ae32dc3a83d263ced521477ac846a4dbcc0526f00b82fb620fab6b
+          `https://min-api.cryptocompare.com/data/price?fsym=${tickerName}&tsyms=USD&api_key=ddbaa78c63ae32dc3a83d263ced521477ac846a4dbcc0526f00b82fb620fab6b`
+        );
+        const data = await f.json();
+
+        this.tickers.find((t) => t.name === tickerName).price =
+          (await data.USD) > 1 ? data.USD.toFixed(2) : data.USD.toPrecision(2);
+
+        if (this.sel?.name === tickerName) {
+          this.graph.push(data.USD);
+        }
+
+        console.log(tickerName, ": ", data.USD);
+      }, 3000);
+    },
     add() {
       const currentTicker = {
         name: this.ticker,
@@ -153,22 +181,11 @@ export default {
       };
 
       this.tickers.push(currentTicker);
-      setInterval(async () => {
-        const f = await fetch(
-          //del key: ddbaa78c63ae32dc3a83d263ced521477ac846a4dbcc0526f00b82fb620fab6b
-          `https://min-api.cryptocompare.com/data/price?fsym=${currentTicker.name}&tsyms=USD&api_key=ddbaa78c63ae32dc3a83d263ced521477ac846a4dbcc0526f00b82fb620fab6b`
-        );
-        const data = await f.json();
 
-        this.tickers.find((t) => t.name === currentTicker.name).price =
-          data.USD > 1 ? data.USD.toFixed(2) : data.USD.toPrecision(2);
+      localStorage.setItem("cryptonom-list", JSON.stringify(this.tickers));
 
-        if (this.sel?.name === currentTicker.name) {
-          this.graph.push(data.USD);
-        }
-
-        console.log(data);
-      }, 3000);
+      //subscrtoUpdates
+      this.subcribeToUpdates(currentTicker.name);
       this.ticker = "";
     },
     select(ticker) {
