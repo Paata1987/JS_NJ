@@ -10,25 +10,38 @@
   <body>
     <div class="container" id="app">
       <div class="card">
-        <h1>{{title}}</h1>
+        <h1>{{toUpperCase(title)}}</h1>
         <div class="form-control">
           <input
-            type="text" 
-            v-bind:value="inputValue"
-            v-bind:placeholder="placeholderString"
-            @input="inputCHangeHandler"
+            type="text"
+            :placeholder="placeholderString"
+            v-model="inputValue"
+            @keypress.enter="addNewNote"
           />
         </div>
-        <h2>
-          input value:   {{inputValue}}
-        </h2>
-        <button class="btn" @click="addNewNote" >add</button>
+        <h2>INPUT VALUE: {{ toUpperCase(inputValue) }}</h2>
+        <button class="btn" @click="addNewNote">add</button>
         <hr />
-        <ul v-for="(myNote , inx) of notes" class="list ">
-           <li key="inx"  class="list-item">
-           {{ myNote}}
-           </li>
+
+        <!-- List component -->
+        <ul
+          v-if="notes.length !==0"
+          v-for="(myNote , idx) of notes"
+          class="list"
+        >
+          <li key="idx" class="list-item">
+            {{idx +1}} {{ toUpperCase(myNote) }}
+            <button @click="removeNote(idx)" class="btn danger">delete</button>
+          </li>
         </ul>
+        <hr />
+        <li>
+          <strong> COMMON AMOUNT: {{ notes.length}} </strong> | DOUBLE: {{
+          doubleCountCompiuted }}
+        </li>
+        <div v-if="notes.length ===0">
+          <h3>Note is Empty</h3>
+        </div>
       </div>
     </div>
     <script src="https://unpkg.com/vue@next"></script>
