@@ -1,23 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="theme.css">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="theme.css" />
     <title>Document</title>
-</head>
-<body>
-    <div class="container pt-5" id="app">
-        <div class="card center">
-            <h1>{{title}}: {{ counter }} </h1>
-            <div>
-                <button class="btn primary" @click="counter++">plus +</button>
-                <button class="btn danger" @click="counter= counter">minus -</button>
-            </div>
+  </head>
+  <body>
+    <div class="container" id="app">
+      <div class="card">
+        <h1>{{title}}</h1>
+        <div class="form-control">
+          <input
+            type="text" 
+            v-bind:value="inputValue"
+            v-bind:placeholder="placeholderString"
+            @input="inputCHangeHandler"
+          />
         </div>
+        <h2>
+          input value:   {{inputValue}}
+        </h2>
+        <button class="btn" @click="addNewNote" >add</button>
+        <hr />
+        <ul v-for="(myNote , inx) of notes" class="list ">
+           <li key="inx"  class="list-item">
+           {{ myNote}}
+           </li>
+        </ul>
+      </div>
     </div>
     <script src="https://unpkg.com/vue@next"></script>
     <script src="app.js"></script>
-</body>
+  </body>
 </html>
