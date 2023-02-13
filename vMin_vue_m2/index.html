@@ -10,7 +10,14 @@
   <body>
     <div class="container" id="app">
       <div class="card">
-        <h1>{{toUpperCase(title)}}</h1>
+        <h1
+          :style="{color: inputValue.length < 5 ? 'darkred' : 'darkblue',
+                 fontSize: inputValue.length < 6 ?  '2rem' : '1.5rem'
+                 }"
+        >
+          {{toUpperCase(title)}}
+        </h1>
+
         <div class="form-control">
           <input
             type="text"
@@ -19,7 +26,7 @@
             @keypress.enter="addNewNote"
           />
         </div>
-        <h2>INPUT VALUE: {{ toUpperCase(inputValue) }}</h2>
+        <!--  <h2>INPUT VALUE: {{ toUpperCase(inputValue) }}</h2> -->
         <button class="btn" @click="addNewNote">add</button>
         <hr />
 
@@ -30,7 +37,18 @@
           class="list"
         >
           <li key="idx" class="list-item">
-            {{idx +1}} {{ toUpperCase(myNote) }}
+            <!--  <span :class="myNote.length > 5 ? 'primary': 'bold' ">
+              {{idx +1}} {{ toUpperCase(myNote) }}</span
+            > -->
+            <!-- <span
+              :class="{
+                'primary': true,
+                'bold': myNote.length > 5
+            } "
+            > -->
+            <span :class="['bold', {'primary': myNote.length > 5 }]">
+              {{idx +1}} {{ toUpperCase(myNote) }}</span
+            >
             <button @click="removeNote(idx)" class="btn danger">delete</button>
           </li>
         </ul>
